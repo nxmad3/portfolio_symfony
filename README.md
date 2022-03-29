@@ -18,9 +18,11 @@ start 29/03/2022
 
 ## How to launch the project ?
   
-git clone https://github.com/nxmad3/SUPER_PORTFOLIO-UwU.git
+clone the project 
   
-cd SUPER_PORTFOLIO-UwU
+        git clone https://github.com/nxmad3/SUPER_PORTFOLIO-UwU.git
+
+        cd SUPER_PORTFOLIO-UwU
 
 type this command to install and build the project
 
