@@ -1,0 +1,7 @@
+{% extends 'ajouterProjet.html.twig' %}
+{% block body %}
+    <h1>projet</h1>
+    {{ form_start(form, { attr: { id: 'form-ajouter_projet', novalidate: 'novalidate' } }) }}
+    {{ form_row(form) }}
+
+{% endblock %}

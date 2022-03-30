@@ -33,20 +33,24 @@ class Projet
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $repartition;
 
-    #[ORM\ManyToMany(targetEntity: techno::class, inversedBy: 'technos')]
+    #[ORM\ManyToMany(targetEntity: Techno::class, inversedBy: 'technos')]
     private $techno;
 
-    #[ORM\ManyToMany(targetEntity: image::class, mappedBy: 'images')]
+    #[ORM\ManyToMany(targetEntity: Image::class, mappedBy: 'images')]
     private $image;
 
-    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: pdf::class)]
+    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: Pdf::class)]
     private $pdf;
+
+    #[ORM\ManyToMany(targetEntity: Outils::class, inversedBy: 'projets')]
+    private $outils;
 
     public function __construct()
     {
         $this->techno = new ArrayCollection();
         $this->image = new ArrayCollection();
         $this->pdf = new ArrayCollection();
+        $this->outils = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,6 +210,30 @@ class Projet
                 $pdf->setProjet(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, outils>
+     */
+    public function getOutils(): Collection
+    {
+        return $this->outils;
+    }
+
+    public function addOutil(outils $outil): self
+    {
+        if (!$this->outils->contains($outil)) {
+            $this->outils[] = $outil;
+        }
+
+        return $this;
+    }
+
+    public function removeOutil(outils $outil): self
+    {
+        $this->outils->removeElement($outil);
 
         return $this;
     }
