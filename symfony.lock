@@ -287,6 +287,12 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/validator": {
+        "version": "6.0",
+        "recipe": {
+            "version": "5.3"
+        }
+    },
     "symfony/var-dumper": {
         "version": "v6.0.6"
     },

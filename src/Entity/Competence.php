@@ -27,6 +27,9 @@ class Competence
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'competence')]
     private $users;
 
+    #[ORM\OneToOne(inversedBy: 'competence', targetEntity: image::class, cascade: ['persist', 'remove'])]
+    private $image;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -96,6 +99,18 @@ class Competence
         if ($this->users->removeElement($user)) {
             $user->removeCompetence($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
