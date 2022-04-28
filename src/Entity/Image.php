@@ -21,6 +21,12 @@ class Image
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'image')]
     private $users;
 
+    #[ORM\OneToOne(mappedBy: 'image', targetEntity: Competence::class, cascade: ['persist', 'remove'])]
+    private $competence;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $file;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -68,5 +74,43 @@ class Image
         }
 
         return $this;
+    }
+
+    public function getCompetence(): ?Competence
+    {
+        return $this->competence;
+    }
+
+    public function setCompetence(?Competence $competence): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($competence === null && $this->competence !== null) {
+            $this->competence->setImage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($competence !== null && $competence->getImage() !== $this) {
+            $competence->setImage($this);
+        }
+
+        $this->competence = $competence;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param mixed $file
+     */
+    public function setFile($file): void
+    {
+        $this->file = $file;
     }
 }

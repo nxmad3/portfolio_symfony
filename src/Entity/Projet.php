@@ -45,6 +45,7 @@ class Projet
     #[ORM\ManyToMany(targetEntity: Outils::class, inversedBy: 'projets')]
     private $outils;
 
+
     public function __construct()
     {
         $this->techno = new ArrayCollection();
@@ -234,6 +235,18 @@ class Projet
     public function removeOutil(outils $outil): self
     {
         $this->outils->removeElement($outil);
+
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(?string $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
