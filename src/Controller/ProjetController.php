@@ -34,15 +34,14 @@ class ProjetController extends AbstractController
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $request->files->get("projet[_token]");
-            dd($file);
-            $inventory_file = $file["image"];
-            $photo_file = $file["file"];
-            $targetDir = $appKernel->getProjectDir() . "/public/uploads";
-            $fileUploader = new FileUploader($targetDir, $slugger);
-            $projet
-                ->setInventoryFile($fileUploader->upload($inventory_file))
-                ->setFile($fileUploader->upload($photo_file));
+//            $file = $request->files->get("projet[_token]");
+//            $inventory_file = $file["image"];
+//            $photo_file = $file["file"];
+//            $targetDir = $appKernel->getProjectDir() . "/public/uploads";
+//            $fileUploader = new FileUploader($targetDir, $slugger);
+//            $projet
+//                ->setInventoryFile($fileUploader->upload($inventory_file))
+//                ->setFile($fileUploader->upload($photo_file));
             $entityManager->persist($projet);
             $entityManager->flush();
         }

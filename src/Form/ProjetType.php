@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,6 +20,13 @@ class ProjetType extends AbstractType
             ->add('description')
             ->add('debut')
             ->add('fin')
+            ->add('chargeTravail')
+            ->add('repartition', ChoiceType::class,[
+                'choices'=>[
+                    'seul'=>'seul',
+                    'groupe'=>'groupe',
+                ]
+            ])
             ->add('techno', EntityType::class, [
                 'class' => 'App\Entity\Techno',
                 'choice_label' => 'label',
