@@ -25,8 +25,6 @@ clone the project
 
 type this command to install and build the project
 
-        npm install
-        npm run build
         composer install
 
 If the database wasn't create run 
