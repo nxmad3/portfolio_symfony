@@ -18,6 +18,9 @@ class Techno
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $label;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'techno')]
     private $Projet;
 
@@ -68,5 +71,21 @@ class Techno
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
     }
 }

@@ -45,6 +45,9 @@ class Projet
     #[ORM\Column(type: 'array', nullable: true)]
     private $images = [];
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'projet')]
+    private $user;
+
 
     public function __construct()
     {
@@ -206,6 +209,18 @@ class Projet
     public function setImages(?array $images): self
     {
         $this->images = $images;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

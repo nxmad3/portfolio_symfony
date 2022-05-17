@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,14 +41,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: 'string', length: 180, unique: true , nullable: true)]
     private $pdf;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: 'string', length: 180, unique: true , nullable: true)]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: competence::class, inversedBy: 'users')]
     private $competence;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Projet::class)]
+    private $projet;
+
+    public function __construct()
+    {
+        $this->projet = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -231,5 +240,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage($image): void
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getProjet(): Collection
+    {
+        return $this->projet;
+    }
+
+    public function addProjet(Projet $projet): self
+    {
+        if (!$this->projet->contains($projet)) {
+            $this->projet[] = $projet;
+            $projet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjet(Projet $projet): self
+    {
+        if ($this->projet->removeElement($projet)) {
+            // set the owning side to null (unless already changed)
+            if ($projet->getUser() === $this) {
+                $projet->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
