@@ -41,7 +41,7 @@ class ProjetType extends AbstractType
             ])
 
             ->add('images', FileType::class, [
-                'label' => 'images (PDF file)',
+                'label' => 'images ',
                 'multiple' => true,
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -52,7 +52,7 @@ class ProjetType extends AbstractType
             ])// ...
 //            faire un form a par pour l'upload de fichier
             ->add('pdfName', FileType::class, [
-                'label' => 'Brochure (PDF file)',
+                'label' => 'pdf',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
