@@ -27,8 +27,8 @@ class Competence
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'competence')]
     private $users;
 
-    #[ORM\OneToOne(inversedBy: 'competence', targetEntity: image::class, cascade: ['persist', 'remove'])]
-    private $image;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $images;
 
     public function __construct()
     {
@@ -103,15 +103,20 @@ class Competence
         return $this;
     }
 
-    public function getImage(): ?image
+    /**
+     * @return mixed
+     */
+    public function getImages()
     {
-        return $this->image;
+        return $this->images;
     }
 
-    public function setImage(?image $image): self
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images): void
     {
-        $this->image = $image;
-
-        return $this;
+        $this->images = $images;
     }
+
 }

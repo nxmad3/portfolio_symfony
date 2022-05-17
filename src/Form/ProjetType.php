@@ -13,7 +13,7 @@ use App\Entity\Projet;
 
 class ProjetType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) :void
     {
         $builder
             ->add('nom')
@@ -39,7 +39,19 @@ class ProjetType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('image', FileType::class, [
+
+            ->add('images', FileType::class, [
+                'label' => 'images (PDF file)',
+                'multiple' => true,
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+            ])// ...
+//            faire un form a par pour l'upload de fichier
+            ->add('pdfName', FileType::class, [
                 'label' => 'Brochure (PDF file)',
 
                 // unmapped means that this field is not associated to any entity property
@@ -55,10 +67,11 @@ class ProjetType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) :void
     {
         $resolver->setDefaults([
             'data_class' => Projet::class,
+            'label' => false,
         ]);
     }
 }

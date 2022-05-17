@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
+use App\Entity\Pdf;
 use App\Entity\Projet;
 use App\Form\ProjetType;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -31,9 +34,65 @@ class ProjetController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $projet = new Projet();
+        $nb =0;
+        $lesImages = [];
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $pdf = $form->get('pdfName')->getData();
+            $images =$form->get('images')->getData();
+            foreach($images as $image){
+                $nb = $nb+ 1;
+                if ($images) {
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $image->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $lesImages[] = $newFilename;
+//
+                }
+            }
+            $projet->setImages($lesImages);
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($pdf) {
+                $originalFilename = pathinfo($pdf->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pdf->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $pdf->move(
+                        $this->getParameter('pdf_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $projet->setPdfName($newFilename);
+            }
+
+            // ... persist the $product variable or any other work
+
+
 //            $file = $request->files->get("projet[_token]");
 //            $inventory_file = $file["image"];
 //            $photo_file = $file["file"];
@@ -42,8 +101,10 @@ class ProjetController extends AbstractController
 //            $projet
 //                ->setInventoryFile($fileUploader->upload($inventory_file))
 //                ->setFile($fileUploader->upload($photo_file));
+
             $entityManager->persist($projet);
             $entityManager->flush();
+            dd($projet->getImages());
         }
         return $this->renderForm('admin/ajouterProjet.html.twig', [
             'form' => $form,

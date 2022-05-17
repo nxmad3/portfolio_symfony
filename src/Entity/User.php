@@ -40,8 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\OneToOne(targetEntity: pdf::class, cascade: ['persist', 'remove'])]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $pdf;
+
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    private $image;
 
     #[ORM\ManyToMany(targetEntity: competence::class, inversedBy: 'users')]
     private $competence;
@@ -173,17 +176,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-    public function getPdf(): ?pdf
-    {
-        return $this->pdf;
-    }
-
-    public function setPdf(?pdf $pdf): self
-    {
-        $this->pdf = $pdf;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, competence>
@@ -207,5 +199,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->competence->removeElement($competence);
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPdf()
+    {
+        return $this->pdf;
+    }
+
+    /**
+     * @param mixed $pdf
+     */
+    public function setPdf($pdf): void
+    {
+        $this->pdf = $pdf;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
     }
 }

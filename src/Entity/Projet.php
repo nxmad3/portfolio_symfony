@@ -36,14 +36,14 @@ class Projet
     #[ORM\ManyToMany(targetEntity: Techno::class, inversedBy: 'technos')]
     private $techno;
 
-    #[ORM\ManyToMany(targetEntity: Image::class, mappedBy: 'images')]
-    private $image;
-
-    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: Pdf::class)]
-    private $pdf;
-
     #[ORM\ManyToMany(targetEntity: Outils::class, inversedBy: 'projets')]
     private $outils;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $pdfName;
+
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $images = [];
 
 
     public function __construct()
@@ -155,65 +155,6 @@ class Projet
         return $this;
     }
 
-    /**
-     * @return Collection<int, image>
-     */
-    public function getImage(): Collection
-    {
-        return $this->image;
-    }
-
-    public function addImage(image $image): self
-    {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->setProjet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(image $image): self
-    {
-        if ($this->image->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getProjet() === $this) {
-                $image->setProjet(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, pdf>
-     */
-    public function getPdf(): Collection
-    {
-        return $this->pdf;
-    }
-
-    public function addPdf(pdf $pdf): self
-    {
-        if (!$this->pdf->contains($pdf)) {
-            $this->pdf[] = $pdf;
-            $pdf->setProjet($this);
-        }
-
-        return $this;
-    }
-
-    public function removePdf(pdf $pdf): self
-    {
-        if ($this->pdf->removeElement($pdf)) {
-            // set the owning side to null (unless already changed)
-            if ($pdf->getProjet() === $this) {
-                $pdf->setProjet(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, outils>
@@ -239,14 +180,32 @@ class Projet
         return $this;
     }
 
-    public function getFile(): ?string
+
+
+    /**
+     * @return mixed
+     */
+    public function getPdfName()
     {
-        return $this->file;
+        return $this->pdfName;
     }
 
-    public function setFile(?string $file): self
+    /**
+     * @param mixed $pdfName
+     */
+    public function setPdfName($pdfName): void
     {
-        $this->file = $file;
+        $this->pdfName = $pdfName;
+    }
+
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
 
         return $this;
     }

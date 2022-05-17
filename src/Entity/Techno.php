@@ -19,11 +19,11 @@ class Techno
     private $label;
 
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'techno')]
-    private $image;
+    private $Projet;
 
     public function __construct()
     {
-        $this->image = new ArrayCollection();
+        $this->Projet = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,25 +46,25 @@ class Techno
     /**
      * @return Collection<int, Projet>
      */
-    public function getImage(): Collection
+    public function getProjet(): Collection
     {
-        return $this->image;
+        return $this->Projet;
     }
 
-    public function addImage(Projet $image): self
+    public function addProjet(Projet $Projet): self
     {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->addTechno($this);
+        if (!$this->Projet->contains($Projet)) {
+            $this->Projet[] = $Projet;
+            $Projet->addTechno($this);
         }
 
         return $this;
     }
 
-    public function removeImage(Projet $image): self
+    public function removeProjet(Projet $Projet): self
     {
-        if ($this->image->removeElement($image)) {
-            $image->removeTechno($this);
+        if ($this->Projet->removeElement($Projet)) {
+            $Projet->removeTechno($this);
         }
 
         return $this;

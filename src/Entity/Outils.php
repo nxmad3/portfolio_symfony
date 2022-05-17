@@ -18,6 +18,9 @@ class Outils
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $label;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'outils')]
     private $projets;
 
@@ -74,5 +77,21 @@ class Outils
     public function getProjets(): Collection
     {
         return $this->projets;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
     }
 }
