@@ -96,5 +96,7 @@
             <img src="uploads/images/{{ competence.images }}" alt="">
         {% endfor %}
     {% endif %}
-
+    {{ form_start(form, { attr: { id: 'form-cotact', novalidate: 'novalidate' } }) }}
+    {{ form_row(form) }}
+    <button class="btn btn-success" style="margin-top: 3%" type="submit">Ajouter</button>
 {% endblock %}
