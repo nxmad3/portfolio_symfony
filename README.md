@@ -39,3 +39,6 @@ To fill the database run
 After making sure that the database has been filled and the project has been built you can type
 
         symfony server:start
+
+  
+## to access at the admin tape /admin and connect with login root and password root
