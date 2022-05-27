@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <h1>admin</h1>
+    <a href={{ path('userModif') }}>modif profil</a>
+
+    <h3>Profil</h3>
+    <p>nom : {{ user.nom }}</p>
+    <p>prénom : {{ user.prenom }}</p>
+    <p>email : {{ user.email }}</p>
+    <p>description : {{ user.presentation }}</p>
+    <p>adresse : {{ user.adresse }}</p>
+    <p>telephone : {{ user.tel }}</p>
+    <p>CV : {{ user.pdf }}</p>
+    <p>image : {{ user.image }}</p>
+
+    {#    <ul> #}
+    {#    <li> #}
+    {#        <a href=\"{{ path('user_show', {'id': user.id}) }}\">{{ user.username }}</a> #}
+    {#    </li> #}
+    {#    <li> #}
+    {#        <a href=\"{{ path('user_edit', {'id': user.id}) }}\">Editer</a> #}
+    {#    </li> #}
+    <h3>projets</h3>
+    {% if  user.projet != null %}
+
+        {% set projets = user.projet %}
+        {% for projet in projets %}
+            {% set nb = projet.images|length %}
+            {{ projet.nom }}
+            {{ projet.description }}
+            {{ projet.debut|date('d/m/Y') }}
+            {{ projet.fin|date('d/m/Y') }}
+            {{ projet.chargeTravail }}
+            {{ projet.repartition }}
+            {% set outils = projet.outils %}
+            {% set technos = projet.techno %}
+            {% for techno in technos %}
+                {{ techno.label }}
+            {% endfor %}
+            {% for outil in outils %}
+                {{ outil.label }}
+            {% endfor %}
+            {% if projet.images != null %}
+                {% set images = projet.images %}
+                <div>
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        {% for i in range(1, nb) %}
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i }}"
+                                    {% if i == 1 %}
+                                        class="active" aria-current="true"
+                                    {% endif %}
+                                    aria-label="Slide {{ i }}"></button>
+                            {{ i }}
+                        {% endfor %}
+
+                    </div>
+                    <div class="carousel-inner">
+                        {% for image in images %}
+                            {{ loop.index }}
+                            <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                                <img src="uploads/images/{{ image }}" class="d-block w-100" alt="...">
+                            </div>
+                        {% endfor %}
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {{ projet.pdfName }}
+        {% endfor %}
+    {% endif %}
+    <h3>competence </h3>
+    <a href="admin/ajouterCompetence">ajouter une competence</a>
+    {% if  user.competences != null %}
+        {% set competences = user.competences %}
+        {% for competence in competences %}
+            {{ competence.nom }}
+            {{ competence.dateInitiation|date('d/m/Y') }}
+            {{ competence.description }}
+            {{ competence.images }}
+            <img src="uploads/images/{{ competence.images }}" alt="">
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

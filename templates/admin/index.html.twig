@@ -41,11 +41,13 @@
             {% for outil in outils %}
                 {{ outil.label }}
             {% endfor %}
-            {% set images = projet.images %}
-{#            {% for image in images %}#}
-{#                {{ image }}#}
-{#                <img src="uploads/images/{{ image }}" alt="">{{ image }}#}
-{#            {% endfor %}#}
+            {% if projet.images != null %}
+                {% set images = projet.images %}
+                {% for image in images %}
+                    {{ image }}
+                    <img src="uploads/images/{{ image }}" alt="">{{ image }}
+                {% endfor %}
+            {% endif %}
 
             {{ projet.pdfName }}
             <a href="admin/modifProjet/{{ projet.id }}">modifier</a>
