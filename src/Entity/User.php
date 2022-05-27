@@ -47,15 +47,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true , nullable: true)]
     private $image;
 
-    #[ORM\ManyToMany(targetEntity: competence::class, inversedBy: 'users')]
-    private $competence;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Projet::class)]
     private $projet;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Competence::class)]
+    private $competences;
 
     public function __construct()
     {
         $this->projet = new ArrayCollection();
+        $this->competences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -270,5 +271,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
     }
 }

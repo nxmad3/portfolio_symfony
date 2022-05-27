@@ -24,11 +24,13 @@ class Competence
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'competence')]
-    private $users;
+
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $images;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'competences')]
+    private $user;
 
     public function __construct()
     {
@@ -76,32 +78,7 @@ class Competence
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addCompetence($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeCompetence($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -117,6 +94,18 @@ class Competence
     public function setImages($images): void
     {
         $this->images = $images;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

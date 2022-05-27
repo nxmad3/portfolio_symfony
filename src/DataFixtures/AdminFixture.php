@@ -23,10 +23,10 @@ class AdminFixture extends Fixture
     {
         $user = new User();
         $user->setRoles(array("ROLE_ADMIN"));
-        $user->setEmail("");
-        $user->setNom("");
-        $user->setPrenom("");
-        $password = $this->hasher->hashPassword($user, '' );
+        $user->setEmail("lj.kyllian@gmail.com");
+        $user->setNom("LOUIS");
+        $user->setPrenom("Ky");
+        $password = $this->hasher->hashPassword($user, 'leroisdespatates' );
         $user->setPassword($password);
 
         $manager->persist($user);
