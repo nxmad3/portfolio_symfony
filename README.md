@@ -41,4 +41,4 @@ After making sure that the database has been filled and the project has been bui
         symfony server:start
 
   
-## to access at the admin tape /admin and connect with login root and password root
+## to access at the admin tape /admin and connect with email root@root.fr and password root
