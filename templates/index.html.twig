@@ -1,287 +1,306 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#profil">{{ user.nom }} <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#projet">projet</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#competence">competence</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#formulaire">contact</a>
-                </li>
-            </ul>
+{% block nav %}
+    <nav id="navbar" class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">{{ user.nom }} {{ user.prenom }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                </span>
+            </button>
+            <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projet">Projets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#competences">Compétence</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Me contacter</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/admin">admin</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ user.image }}" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <p class="card-text"><p>{{ user.nom }}</p>
-                    <p>{{ user.prenom }}</p></p>
-                    <p class="card-text"><small class="text-muted"><p>{{ user.presentation }}</p>
-                    <p>CV : {{ user.pdf }}</p>
+
+{% endblock %}
+
+{% block body %}
+    <section class="text-black ">
+        <div class="container" id="acceuil">
+            <div class="row">
+                <div class="col">
+                    <img src="uploads/images/{{ user.image }}" alt="image profil" class="rounded-circle"
+                         style="width: 37%;">
                 </div>
-            </div>
-        </div>
-    </div>
+                <div class="col">
+                    <p class="font-weight-bold h5" style="margin-top: 3%;">
+                        {{ user.presentation }}
+                    </p>
+                    <!-- Button trigger modal -->
 
-
-
-
-
-    {# <ul> #}
-    {# <li> #}
-    {# <a href=\"{{ path('user_show', {'id': user.id}) }}\">{{ user.username }}</a> #}
-    {# </li> #}
-    {# <li> #}
-    {# <a href=\"{{ path('user_edit', {'id': user.id}) }}\">Editer</a> #}
-    {# </li> #}
-    <h3 id="projet">projets</h3>
-    {% if  user.projet != null %}
-
-        {% set projets = user.projet %}
-        {% for projet in projets %}
-            {% set nb = projet.images|length %}
-
-            <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..." alt="">{% if projet.images != null %}
-            {% set images = projet.images %}
-            <div>
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                <div class="carousel-indicators">
-                    {% for i in range(1, nb) %}
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ i }}"
-                                {% if i == 1 %}
-                                    class="active" aria-current="true"
-                                {% endif %}
-                                aria-label="Slide {{ i }}"></button>
-                        {{ i }}
-                    {% endfor %}
-
+                    <a href="uploads/pdf/{{ user.pdf }}" download="CV_{{ user.nom }}_{{ user.prenom }}"
+                       class="btn btn-primary btn-lg active" style="margin-left: 22%;" role="button"
+                       aria-pressed="true">Telecharger CV</a>
                 </div>
-                <div class="carousel-inner" style="max-height: 200px; min-height: 200px">
-                    {% for image in images %}
-                        {{ loop.index }}
-                        <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
-                            <img src="uploads/images/{{ image }}" class="d-block w-100" alt="...">
-                        </div>
-                    {% endfor %}
-
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                            data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                            data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-
-        {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ projet.nom }}</h5>
-                <p class="card-text">{{ projet.description }}</p>
-            </div>
-            <div class="card-body" style="line-height : 1;">
-
-            <p>date début : {{ projet.debut|date('d/m/Y') }}</p>
-            <p>date fin : {{ projet.fin|date('d/m/Y') }}</p>
-            <p>charge de travail : {{ projet.chargeTravail }}</p>
-            <p>repartition du travauil : {{ projet.repartition }} </p>
-            {% set outils = projet.outils %}
-            {% set technos = projet.techno %}
-            <p>techno utilisé :
-            {% for techno in technos %}
-                {{ techno.label }}</p>
-            {% endfor %}
-            <p>outil utilisé :
-            {% for outil in outils %}
-                {{ outil.label }}</p>
-            {% endfor %}
-
-
-            <p>pdf : {{ projet.pdfName }}</p>
-        {% endfor %}
-    {% endif %}
-    </div>
-    </div>
-    </div>
-
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Septembre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">HTML &amp; CSS</h5>
-            <p class="description">
-                Initiation au HTML & CSS
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-
-    <!-- start experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Octobre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">C#</h5>
-            <p class="description">
-                Initiation au C#
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-
-    <!-- start experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Octobre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">Wordpress</h5>
-            <p class="description">
-                Initiation au CMS WordPress
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-
-    <!-- start experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Octobre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">SQL</h5>
-            <p class="description">
-                Initiation au SQL
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-
-    <!-- start experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Novembre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">Bootstrap & jQuery</h5>
-            <p class="description">
-                Initiation à Bootstrap & jQuery pour le dynamisme et le responsive
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-
-    <!-- start experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Decembre</span>
-								<span class="year">2020</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">PHP</h5>
-            <p class="description">
-                Initiation au PHP
-            </p>
-        </div>
-    </div>
-    <!-- end experience section-->
-    <div class="timeline">
-        <div class="icon"></div>
-        <div class="date-content">
-            <div class="date-outer">
-							<span class="date">
-								<span class="month">Octobre</span>
-								<span class="year">2021</span>
-							</span>
-            </div>
-        </div>
-        <div class="timeline-content">
-            <h5 class="title">Symfony</h5>
-            <p class="description">
-                Initiation à Symfony
-            </p>
-        </div>
-    </div>
-    </div>
-
-    </div>
-
-    <section class="resume-section p-4 p-lg-5 text-center" id="formulaire">
-        <div class="formulaire">
-            <h1 class="titreformulaire">Formulaire</h1>
-            <div class="my-auto">
-                <div class="ligneformulaire">
-                </div>
-                <ul class="fa-ul mb-4 ml-0">
-                    <p style=" margin-right:2%; ">{{ user.email }}</p>
-                    <p style=" margin-right:2%; ">{{ user.tel }}</p>
-                    <p style=" margin-right:2%; ">{{ user.adresse }}</p>
-                </ul>
-                <form class="contact-form d-flex flex-column align-items-center" action="/index.php" role="form" method="POST">
-                    <div class="form-group">
-                        {{ form_start(form, { attr: { id: 'form-cotact', novalidate: 'novalidate' } }) }}
-                        {{ form_row(form) }}
-                    </div>
-                    <button class="btn btn-success" style="margin-top: 3%" type="submit">Ajouter</button>
-                </form>
             </div>
         </div>
     </section>
+
+    <section class=" projet" style="height: 229%;">
+        <div class="container" id="projet">
+            <p class="text-center font-weight-bold h3 pt-5 mb-5 text-black">projets</p>
+            {% if  user.projet != null %}
+                <div class="row row-cols-1 row-cols-md-3">
+                    {% set projets = user.projet %}
+                    {% for projet in projets %}
+                        {% set nb = projet.images|length %}
+                        <div class="col-sm-2">
+                            <div class="card">
+                                {% if projet.images != null %}
+                                {% set images = projet.images %}
+                                <div id="carouselExampleIndicators{{ projet.id }}" class="carousel slide"
+                                     data-bs-ride="true">
+                                    <div class="carousel-indicators">
+                                        {% for i in range(1, nb) %}
+                                            <button type="button"
+                                                    data-bs-target="#carouselExampleIndicators{{ projet.id }}"
+                                                    data-bs-slide-to="{{ i }}"
+                                                    {% if i == 1 %}
+                                                        class="active" aria-current="true"
+                                                    {% endif %}
+                                                    aria-label="Slide {{ i }}"></button>
+                                        {% endfor %}
+
+                                    </div>
+                                    <div class="carousel-inner" style="max-height: 200px; min-height: 200px">
+                                        {% for image in images %}
+                                            <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                                                <img src="uploads/images/{{ image }}" class="card-img-top" alt="...">
+                                            </div>
+                                        {% endfor %}
+
+                                        <button class="carousel-control-prev" type="button"
+                                                data-bs-target="#carouselExampleIndicators{{ projet.id }}"
+                                                data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                                data-bs-target="#carouselExampleIndicators{{ projet.id }}"
+                                                data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+
+
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h5 class="card-title">{{ projet.nom }}</h5>
+                                            <p class="card-text">
+                                            <p class="card-text">{{ projet.description }}</p>
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#info{{ projet.id }}"
+                                                    aria-expanded=" false"
+                                                    aria-controls="info{{ projet.id }}">
+                                                description
+                                            </button>
+                                            <a href="uploads/pdf/{{ user.pdf }}"
+                                               download="CV_{{ user.nom }}_{{ user.prenom }}"
+                                               class="btn btn-primary  active" role="button"
+                                               aria-pressed="true">Telecharger CV</a>
+
+
+                                            <div class="modal fade" id="Modal{{ projet.id }}"
+                                                 tabindex="-1"
+                                                 aria-labelledby="ModalLabel{{ projet.id }}"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="ModalLabel{{ projet.id }}">
+                                                                cv
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <iframe src="uploads/pdf/{{ user.pdf }}" height="500px"
+                                                                    width="100%"></iframe>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="collapse" id="info{{ projet.id }}">
+                                                <div class="card card-body">
+                                                    {% set outils = projet.outils %}
+                                                    {% set technos = projet.techno %}
+                                                    <p>techno utilisé :
+                                                        {% for techno in technos %}
+                                                            {{ techno.label }}
+                                                        {% endfor %}
+                                                    </p>
+                                                    <p>charge de travail : {{ projet.chargeTravail }} H</p>
+                                                    <p>repartition du travauil : {{ projet.repartition }} </p>
+                                                    <p>date début : {{ projet.debut|date('d/m/Y') }}</p>
+                                                    <p>date fin : {{ projet.fin|date('d/m/Y') }}</p>
+                                                    <p>outil utilisé :
+                                                        {% for outil in outils %}
+                                                            {{ outil.label }}
+                                                        {% endfor %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+    <section id="competences">
+
+
+        <h1 style="text-align: center;margin-bottom: 3%;">Mes Compétences</h1>
+        <div class="container">
+            <div class="main-timeline">
+                {% if  user.competences != null %}
+                    {% set competences = user.competences %}
+                    {% for competence in competences %}
+                        <!-- start experience section-->
+                        <div class="timeline">
+                            <div class="icon"></div>
+                            <div class="date-content">
+                                <div class="date-outer">
+						<span class="date">
+							<span class="month">{{ competence.dateInitiation|date('M' , "Europe/Paris") }}</span>
+							<span class="year">{{ competence.dateInitiation|date('Y') }}</span>
+						</span>
+                                </div>
+                            </div>
+                            <div class="timeline-content">
+                                <h5 class="title">{{ competence.nom }}</h5>
+                                <p class="description">
+                                    {{ competence.description }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <!-- end experience section-->
+            </div>
+        </div>
+
+    </section>
+
+    <section class="text-black w-50 mx-auto ">
+        <div class="contact" id="contact">
+            <!--Section heading-->
+            <h2 class="h1-responsive font-weight-bold text-center my-4 text-black">Me contacter</h2>
+            <div class="row">
+                <!--Grid column-->
+
+
+                <div class="col-md-9 mb-md-0 mb-5">
+                    {{ form_start(form, { attr: { id: 'form-cotact', novalidate: 'novalidate' } }) }}
+                    <!--Grid row-->
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                {{ form_row(form.nom) }}
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                        <!--Grid column-->
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                {{ form_row(form.email) }}
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="md-form mb-0">
+                                {{ form_row(form.sujet) }}
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-md-12">
+                            <div class="md-form">
+                                {{ form_row(form.message) }}
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--Grid row-->
+                    <button type="submit" class="btn btn-primary" name="envoyer" value="envoyer">envoyer</button>
+                    </form>
+                    <div class="status"></div>
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <div class="col-md-3 text-center text-black">
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-2x"></i>
+                            <p>
+                                {{ user.adresse }}
+                            </p>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone mt-4 fa-2x"></i>
+                            <p>
+                                {{ user.tel }}
+                            </p>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope mt-4 fa-2x"></i>
+                            <div class="hidden content">
+                                <a href='https://mail.google.com/mail/u/0/#inbox?compose=new' target='_blank'>
+                                    <p> {{ user.email }}</p>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

@@ -16,6 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CompetenceController extends AbstractController
 {
+
     #[Route('admin/ajouterCompetence', name: 'ajouterCompetence')]
     public function ajouterCompetence(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger, KernelInterface $appKernel): Response
     {
@@ -25,34 +26,14 @@ class CompetenceController extends AbstractController
         $form = $this->createForm(CompetenceType::class, $Competence);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('images')->getData() !== null) {
-                $competences = $form->get('images')->getData();
-                $competence = $competences[0];
-                $originalFilename = pathinfo($competence->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $competence->guessExtension();
-
-                // Move the file to the directory where pdf are stored
-                try {
-                    $competence->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
-                $Competence->setImages($newFilename);
-            }
+            $Competence->setUser($user);
+            $entityManager->persist($Competence);
+            $entityManager->flush();
+            return $this->redirectToRoute('admin'); // Redirection vers la page admin
         }
 
 
-        $Competence->setUser($user);
-        $entityManager->persist($Competence);
-        $entityManager->flush();
-
-        return $this->renderForm('admin/ajouterCompetence.html.twig', ['form' => $form,]);
+        return $this->renderForm('admin/ajouterCompetence.html.twig', ['form' => $form]);
     }
 
     #[Route('admin/modifCompetence/{id}', name: 'modifCompetence')]
@@ -62,35 +43,22 @@ class CompetenceController extends AbstractController
         $Competence = $entityManager->getRepository(Competence::class)->find($id);
         $form = $this->createForm(CompetenceType::class, $Competence);
         $form->handleRequest($request);
-        if ($form->get('images')->getData() !== null) {
-            $competences = $form->get('images')->getData();
-            $competence = $competences[0];
-            $originalFilename = pathinfo($competence->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $competence->guessExtension();
 
-            // Move the file to the directory where pdf are stored
-            try {
-                $competence->move(
-                    $this->getParameter('images_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($Competence);
+            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->flush();
+           return $this->redirectToRoute('admin');
 
-            $Competence->setImages($newFilename);
         }
-        $entityManager->persist($Competence);
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
+
         return $this->renderForm('admin/modifCompetence.html.twig', [
             'form' => $form,
+
         ]);
     }
 
-    #[Route('admin/suppCompetence/{id}', name: 'modifCompetence')]
+    #[Route('admin/suppCompetence/{id}', name: 'suppCompetence')]
     public function suppCompetence(int $id, Request $request, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();

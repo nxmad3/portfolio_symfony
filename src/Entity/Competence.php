@@ -24,11 +24,6 @@ class Competence
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
-
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $images;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'competences')]
     private $user;
 
@@ -76,24 +71,6 @@ class Competence
         $this->description = $description;
 
         return $this;
-    }
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getImages()
-    {
-        return $this->images;
-    }
-
-    /**
-     * @param mixed $images
-     */
-    public function setImages($images): void
-    {
-        $this->images = $images;
     }
 
     public function getUser(): ?User

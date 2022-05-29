@@ -19,16 +19,7 @@ class CompetenceType extends AbstractType
             ->add('nom')
             ->add('dateInitiation')
             ->add('description')
-            ->add('images', FileType::class, [
-                'label' => 'images ',
-                'multiple' => true,
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => false,
-            ]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver) :void

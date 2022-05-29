@@ -19,6 +19,18 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProjetController extends AbstractController
 {
 
+    #[Route('admin/suppProjet/{id}', name: 'suppProjet')]
+    public function suppProjet(int $id, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $projet = $entityManager->getRepository(Projet::class)->find($id);
+        $entityManager->remove($projet);
+        // actually executes the queries (i.e. the INSERT query)
+        $entityManager->flush();
+        return $this->redirectToRoute('admin');
+    }
+
+
     #[Route('admin/ajouterProjet', name: 'ajouterProjet')]
     public function ajouterProjet(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger, KernelInterface $appKernel): Response
     {
@@ -80,11 +92,13 @@ class ProjetController extends AbstractController
             $projet->setUser($user);
             $entityManager->persist($projet);
             $entityManager->flush();
+            return $this->redirectToRoute('admin');
         }
         return $this->renderForm('admin/ajouterProjet.html.twig', [
             'form' => $form,
         ]);
     }
+
 
     #[Route('admin/modifProjet/{id}', name: 'modifProjet')]
     public function modifProjet(int $id, Request $request, ManagerRegistry $doctrine , SluggerInterface $slugger): Response
@@ -94,6 +108,7 @@ class ProjetController extends AbstractController
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
         /** @var UploadedFile $brochureFile */
+        if ($form->isSubmitted() && $form->isValid()) {
         if ($form->get('images')->getData() !== null && $form->get('pdfName')->getData() !== null) {
             $pdf = $form->get('pdfName')->getData();
             $images = $form->get('images')->getData();
@@ -143,19 +158,10 @@ class ProjetController extends AbstractController
         $entityManager->persist($projet);
         // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
+        return $this->redirectToRoute('admin');
+    }
         return $this->renderForm('admin/modifProjet.html.twig', [
             'form' => $form,
         ]);
-    }
-
-    #[Route('admin/suppProjet/{id}', name: 'modifProjet')]
-    public function suppProjet(int $id, Request $request, ManagerRegistry $doctrine): Response
-    {
-        $entityManager = $doctrine->getManager();
-        $projet = $entityManager->getRepository(Projet::class)->find($id);
-        $entityManager->remove($projet);
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-        return $this->redirectToRoute('admin');
     }
 }

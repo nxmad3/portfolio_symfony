@@ -14,12 +14,14 @@ class Admin extends AbstractController
     public function index( Request $request, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('login');
+
+        if ($this->getUser()) {
+            $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+            return $this->render('admin/index.html.twig', [
+                'user' => $user
+            ]);
         }
-        return $this->render('admin/index.html.twig', [
-            'user' => $user
-        ]);
+        return $this->redirectToRoute('login');
+
     }
 }
