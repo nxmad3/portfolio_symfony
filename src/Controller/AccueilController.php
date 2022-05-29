@@ -16,7 +16,7 @@ class AccueilController extends AbstractController
     public function index( Request $request, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+        $user = $entityManager->getRepository(User::class)->find(5);
         $entityManager = $doctrine->getManager();
         $contact = new Contact();
 
