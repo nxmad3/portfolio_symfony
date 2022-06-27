@@ -2,7 +2,7 @@ Pause jusqu'au 1 juillet :)
 
 # portfolio_symfony
 
-# <ins>[[SUPER_PORTFOLIO-UwU](https://github.com/nxmad3/SUPER_PORTFOLIO-UwU.git)]
+# <ins>[[portfolio_symfony](https://github.com/nxmad3/portfolio_symfony.git)]
 
 ## Information :
 
