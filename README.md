@@ -1,5 +1,3 @@
-# Pause jusqu'au 20 aout :)
-
 # portfolio_symfony
 
 # <ins>[[portfolio_symfony](https://github.com/nxmad3/portfolio_symfony.git)]
