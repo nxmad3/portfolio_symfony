@@ -58,6 +58,8 @@
     </div>
 
     <div>
+    <h3>projet </h3>
+        <a href="admin/ajouterProjet">ajouter un projet</a>
         {% if  user.projet != null %}
             <div class="row row-cols-1 row-cols-md-3">
                 {% set projets = user.projet %}
@@ -65,6 +67,7 @@
                     {% set nb = projet.images|length %}
                     <div class="col-sm-2">
                         <div class="card">
+                        
                             {% if projet.images != null %}
                             {% set images = projet.images %}
                             <div id="carouselExampleIndicators{{ projet.id }}" class="carousel slide"
@@ -88,18 +91,6 @@
                                         </div>
                                     {% endfor %}
 
-                                    <button class="carousel-control-prev" type="button"
-                                            data-bs-target="#carouselExampleIndicators{{ projet.id }}"
-                                            data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button"
-                                            data-bs-target="#carouselExampleIndicators{{ projet.id }}"
-                                            data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
                                 </div>
                                 {% endif %}
                             </div>

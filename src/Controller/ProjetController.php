@@ -42,11 +42,11 @@ class ProjetController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
-            if ($form->get('images')->getData() !== null && $form->get('pdfName')->getData() !== null) {
+            if ($form->get('images')->getData() !== null || $form->get('pdfName')->getData() !== null) {
                 $pdf = $form->get('pdfName')->getData();
                 $images = $form->get('images')->getData();
                 foreach ($images as $image) {
-                    if ($images) {
+                    if ($image) {
                         $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                         // this is needed to safely include the file name as part of the URL
                         $safeFilename = $slugger->slug($originalFilename);
