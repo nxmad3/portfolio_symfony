@@ -1,5 +1,3 @@
-# Pause jusqu'au 20 aout :)
-
 # portfolio_symfony
 
 # <ins>[[portfolio_symfony](https://github.com/nxmad3/portfolio_symfony.git)]
@@ -22,8 +20,8 @@ start 29/03/2022
   
 clone the project 
   
-        git clone https://github.com/nxmad3/SUPER_PORTFOLIO-UwU.git
-        cd SUPER_PORTFOLIO-UwU
+        git clone https://github.com/nxmad3/portfolio_symfony.git
+        cd portfolio_symfony
 
 type this command to install and build the project
 
