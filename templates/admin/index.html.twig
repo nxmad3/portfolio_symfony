@@ -106,10 +106,10 @@
                                                 aria-controls="info{{ projet.id }}">
                                             description
                                         </button>
-                                        <a href="uploads/pdf/{{ user.pdf }}"
-                                           download="CV_{{ user.nom }}_{{ user.prenom }}"
+                                        <a href="uploads/pdf/{{ projet.pdfName }}"
+                                           download="Documentation_{{projet.nom}}"
                                            class="btn btn-primary active" role="button"
-                                           aria-pressed="true">Telecharger CV</a>
+                                           aria-pressed="true">Telecharger documentation</a>
                                         <a class="btn btn-success" href="admin/modifProjet/{{ projet.id }}">modifier</a>
                                         <a class="btn btn-warning" href="admin/suppProjet/{{ projet.id }}">supprimer</a>
 
